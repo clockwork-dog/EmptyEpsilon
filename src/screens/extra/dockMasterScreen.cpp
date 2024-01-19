@@ -94,7 +94,7 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
             my_spaceship->commandSetDockMoveTarget(index, value.toInt());
     });
 
-    action_move_button = new GuiButton(action_move, "MOVE_BUTTON", tr("Deliver"), [this]() {
+    action_move_button = new GuiButton(action_move, "MOVE_BUTTON", tr("Move"), [this]() {
         if (my_spaceship)
             if (my_spaceship->getSystemEffectiveness(SYS_Docks) > 0)
             {
@@ -277,7 +277,7 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
     distance_bar->setPosition(0, 50, ACenter)->setSize(COLUMN_WIDTH, 50);
     (new GuiPowerDamageIndicator(distance_bar, "DOCKS_DPI", SYS_Docks, ATopCenter, my_spaceship))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
-    cancel_move_button = new GuiButton(overlay, "CANCEL_MOVE_BUTTON", tr("Cancel deliver"), [this]() {
+    cancel_move_button = new GuiButton(overlay, "CANCEL_MOVE_BUTTON", tr("Cancel move"), [this]() {
         my_spaceship->commandCancelMoveCargo(index);
     });
     cancel_move_button->setPosition(0, 100, ACenter)->setSize(COLUMN_WIDTH, 50);
@@ -375,7 +375,7 @@ void DockMasterScreen::onDraw(sf::RenderTarget &window)
         case MovingOut:
             displayDroneDetails(dockData);
             overlay->setVisible(true);
-            overlay_label->setText(tr("Outcoming cargo"));
+            overlay_label->setText(tr("Outgoing cargo"));
             distance_bar->setVisible(true);
             distance_bar->setValue(dockData.current_distance);
             cancel_move_button->setVisible(true);

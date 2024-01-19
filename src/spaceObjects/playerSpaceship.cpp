@@ -380,14 +380,14 @@ PlayerSpaceship::PlayerSpaceship()
         tr("Electric signature"),
         tr("Biomass frequency"),
         tr("Gravity well signature"),
-        tr("Radiation halftime"),
+        tr("Radiation halflife"),
         tr("Radio profile"),
         tr("Ionic phase shift"),
         tr("Infra-red color shift"),
         tr("Doppler stability"),
-        tr("Raspberry jam prevention"),
-        tr("Infinity improbability"),
-        tr("Zerospace audio frequency"),
+        tr("Etheric Density"),
+        tr("Tachyon wave signature"),
+        tr("Subspace frequency"),
         tr("Polarity inversion")
     });
 
@@ -1614,12 +1614,12 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sf::Packet& pack
                 if (active)
                 {
                     playSoundOnMainScreen("shield_up.wav");
-                    addToShipLog(tr("Shield up"),sf::Color::Green,engineering);
+                    addToShipLog(tr("Shields up"),sf::Color::Green,engineering);
                 }
                 else
                 {
                     playSoundOnMainScreen("shield_down.wav");
-                    addToShipLog(tr("Shield down"),sf::Color::Green,engineering);
+                    addToShipLog(tr("Shields down"),sf::Color::Green,engineering);
                 }
             }
         }
@@ -1752,7 +1752,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sf::Packet& pack
     case CMD_ABORT_DOCK:
         {
             abortDock();
-            addToShipLog(tr("Docking aborded"),sf::Color::Cyan,engineering);
+            addToShipLog(tr("Docking aborted"),sf::Color::Cyan,engineering);
         }
         break;
     case CMD_OPEN_TEXT_COMM:
@@ -1961,7 +1961,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sf::Packet& pack
         break;
     case CMD_ACTIVATE_SELF_DESTRUCT:
         activate_self_destruct = true;
-        addToShipLog(tr("Self Destruction procedure activate"),sf::Color::Red,engineering);
+        addToShipLog(tr("Self Destruction procedure activated"),sf::Color::Red,engineering);
         for(int n=0; n<max_self_destruct_codes; n++)
         {
             self_destruct_code[n] = irandom(0, 99999);
@@ -1990,7 +1990,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sf::Packet& pack
         if (self_destruct_countdown <= 0.0f)
         {
             activate_self_destruct = false;
-            addToShipLog(tr("Self Destruction procedure canceled"),sf::Color::Red,engineering);
+            addToShipLog(tr("Self Destruction procedure cancelled"),sf::Color::Red,engineering);
         }
         break;
     case CMD_CONFIRM_SELF_DESTRUCT:

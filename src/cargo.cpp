@@ -30,11 +30,11 @@ Cargo::Entries Cargo::getEntries()
                 label = "-";
                 break;
             case MW_Homing:
-                label = "TCC";
+                label = "HOMING";
                 icon = "gui/icons/weapon-homing.png";
                 break;
             case MW_Nuke:
-                label = "TCN";
+                label = "NUKE";
                 icon = "gui/icons/weapon-nuke.png";
                 break;
             case MW_Mine:
@@ -42,11 +42,11 @@ Cargo::Entries Cargo::getEntries()
                 icon = "gui/icons/weapon-mine.png";
                 break;
             case MW_EMP:
-                label = "TCI";
+                label = "EMP";
                 icon = "gui/icons/weapon-emp.png";
                 break;
             case MW_HVLI:
-                label = "TBHV";
+                label = "HVLI";
                 icon = "gui/icons/weapon-hvli.png";
                 break;
             default:
