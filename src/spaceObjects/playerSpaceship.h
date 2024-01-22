@@ -123,6 +123,8 @@ public:
     bool lock_fire;
     // Password to join a ship. Default is empty.
     string control_code;
+    // Enable/Disable ship destruction due to reactor overheat
+    bool disable_reactor_overheat_ship_destruction;
 
 private:
     bool on_new_player_ship_called=false;

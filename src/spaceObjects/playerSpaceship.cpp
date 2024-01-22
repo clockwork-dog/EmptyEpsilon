@@ -375,6 +375,7 @@ PlayerSpaceship::PlayerSpaceship()
     shields_active = false;
     lock_fire = true;
     control_code = "";
+    disable_reactor_overheat_ship_destruction = PreferencesManager::get("disable_reactor_overheat_ship_destruction", "0").toInt();
     scanning_noise = 0.0;
     scan_labels.assign({
         tr("Electric signature"),
@@ -765,7 +766,7 @@ void PlayerSpaceship::update(float delta)
 
         // If reactor health is worse than -90% and overheating, it explodes,
         // destroying the ship and damaging a 0.5U radius.
-        if (systems[SYS_Reactor].health < -0.9 && systems[SYS_Reactor].heat_level == 1.0)
+        if (systems[SYS_Reactor].health < -0.9 && systems[SYS_Reactor].heat_level == 1.0 && !disable_reactor_overheat_ship_destruction)
         {
             ExplosionEffect* e = new ExplosionEffect();
             e->setSize(1000.0f);
