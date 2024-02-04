@@ -240,6 +240,7 @@ set(SOURCES
 	src/screenComponents/lightsOut.cpp
 	src/screenComponents/miniGame.cpp
 	src/screenComponents/mineSweeper.cpp
+	src/screenComponents/numericEntryPanel.cpp
 	src/screenComponents/impulseSound.cpp
 	src/screenComponents/systemEffectsList.cpp
 	src/screenComponents/tractorBeamControl.cpp

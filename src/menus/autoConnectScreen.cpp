@@ -8,6 +8,10 @@
 
 #include "gui/gui2_label.h"
 #include "gui/gui2_overlay.h"
+#include "gui/gui2_panel.h"
+#include "gui/gui2_textentry.h"
+#include "gui/gui2_togglebutton.h"
+#include "../screenComponents/numericEntryPanel.h"
 
 AutoConnectScreen::AutoConnectScreen(ECrewPosition crew_position, int auto_mainscreen, bool control_main_screen, string ship_filter)
 : crew_position(crew_position), auto_mainscreen(auto_mainscreen) , control_main_screen(control_main_screen)
@@ -54,6 +58,11 @@ AutoConnectScreen::AutoConnectScreen(ECrewPosition crew_position, int auto_mains
         (new GuiLabel(this, "", PreferencesManager::get("instance_name"), 25))->setAlignment(ACenterLeft)->setPosition(20, 20, ATopLeft)->setSize(0, 18);
     }
 }
+
+bool AutoConnectScreen::is_integer(const std::string& string)
+{
+    return !string.empty() && std::find_if(string.begin(), string.end(), [](char c) { return !std::isdigit(c); }) == string.end();
+};
 
 AutoConnectScreen::~AutoConnectScreen()
 {
@@ -122,8 +131,11 @@ void AutoConnectScreen::update(float delta)
                                 for(int n=0; n<max_crew_positions; n++)
                                     my_player_info->commandSetCrewPosition(crew_position, false);
                             }
-                            destroy();
-                            my_player_info->spawnUI();
+
+                            if(!waiting_for_password) {
+                                status_label->hide();
+                                connectToMyShip();
+                            }
                         }
                     }
                 }else{
@@ -132,6 +144,126 @@ void AutoConnectScreen::update(float delta)
             }
             break;
         }
+    }
+}
+
+void AutoConnectScreen::autoConnectPasswordEntryOnOkClick() {
+        P<PlayerSpaceship> ship = my_spaceship;
+
+        if (ship)
+        {
+            // Get the password.
+            string password = password_entry->getText();
+            string control_code = ship->control_code;
+
+            if (password != control_code)
+            {
+                // Password doesn't match. Unset the player ship selection.
+                LOG(INFO) << "Password doesn't match control code. Attempt: " << password;
+                my_player_info->commandSetShipId(-1);
+                // Notify the player.
+                password_label->setText("Incorrect control code. Re-enter code for " + ship->getCallSign() + ":");
+                // Reset the dialog.
+                password_entry->setText("");
+            }
+            else
+            {
+                // Password matches.
+                LOG(INFO) << "Password matches control code.";
+                // Set the player ship.
+                my_player_info->commandSetShipId(ship->getMultiplayerId());
+                // Notify the player.
+                password_label->setText("Control code accepted.\nGranting access to " + ship->getCallSign() + ".");
+                // Reset and hide the password field.
+                password_entry->setText("");
+                password_entry->hide();
+                password_entry_ok->hide();
+                // Show a confirmation button.
+                password_confirmation->show();
+
+                destroy();
+                my_player_info->spawnUI();
+            }
+        }
+}
+
+void AutoConnectScreen::connectToMyShip() {
+    P<PlayerSpaceship> ship = my_spaceship;
+    waiting_for_password = false;
+
+    // Control code entry dialog.
+    password_overlay = new GuiOverlay(this, "PASSWORD_OVERLAY", sf::Color::Black - sf::Color(0, 0, 0, 192));
+    password_overlay->hide();
+    password_entry_box = new GuiPanel(password_overlay, "PASSWORD_ENTRY_BOX");
+    password_entry_box->setPosition(0, 350, ATopCenter)->setSize(600, 200);
+    password_label = new GuiLabel(password_entry_box, "PASSWORD_LABEL", "Enter this ship's control code:", 30);
+    password_label->setPosition(0, 40, ATopCenter);
+    password_entry = new GuiTextEntry(password_entry_box, "PASSWORD_ENTRY", "");
+    password_entry->setPosition(20, 0, ACenterLeft)->setSize(400, 50);
+    password_entry->enterCallback([this](string text)
+    {
+        this->autoConnectPasswordEntryOnOkClick();
+    });
+
+    // Control code entry button.
+    password_entry_ok = new GuiButton(password_entry_box, "PASSWORD_ENTRY_OK", "Ok", [this]()
+    {
+        this->autoConnectPasswordEntryOnOkClick();
+    });
+    password_entry_ok->setPosition(420, 0, ACenterLeft)->setSize(160, 50);
+
+    // Control code confirmation button
+    password_confirmation = new GuiButton(password_entry_box, "PASSWORD_CONFIRMATION_BUTTON", "OK", [this]() {
+        // Reset the dialog.
+        password_entry->show();
+        password_entry_ok->show();
+        password_label->setText("Enter this ship's control code:")->setPosition(0, 40, ATopCenter);
+        password_confirmation->hide();
+        // Hide the dialog.
+        password_overlay->hide();
+    });
+    password_confirmation->setPosition(0, -20, ABottomCenter)->setSize(250, 50)->hide();
+
+
+    /*************************************************
+    ** Control Code - Numeric Entry Pad
+    */
+    control_code_numeric_panel = new GuiControlNumericEntryPanel(this, "CODE_ENTRY", "Enter this ship's control code");
+    control_code_numeric_panel->enterCallback([this](int value) {
+        P<PlayerSpaceship> ship = my_spaceship;
+
+        if(ship->control_code.toInt() == value) {
+            destroy();
+            my_player_info->spawnUI();
+        }
+        else
+        {
+            control_code_numeric_panel->setPrompt("Incorrect Control Code");
+            control_code_numeric_panel->clearCode();
+        }
+    });
+
+    control_code_numeric_panel->clearCallback([this](int value) {
+        control_code_numeric_panel->clearPrompt();
+    });
+
+    if (ship->control_code.length() > 0 && PreferencesManager::get("autoconnect_control_code_bypass", "").toInt() < 1)
+    {
+        LOG(INFO) << "Autoconnect selected " << ship->getCallSign() << ", which has a control code.";
+
+        if(this->is_integer(ship->control_code) && PreferencesManager::get("autoconnect_control_code_prefer_numeric_pad", "").toInt() > 0) {
+            waiting_for_password = true;
+            control_code_numeric_panel->show();
+        }
+        else
+        {
+            // Show the control code entry dialog.
+            waiting_for_password = true;
+            password_overlay->show();
+        }
+    } else {
+        destroy();
+        my_player_info->spawnUI();
     }
 }
 
