@@ -41,3 +41,4 @@ logs
 
 _build_win32
 cmake/_win32
+_build

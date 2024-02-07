@@ -2618,6 +2618,8 @@ void PlayerSpaceship::onReceiveServerCommand(sf::Packet& packet)
 
 void PlayerSpaceship::drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
 {
+    if (docked_style == DockStyle::Internal) return;
+
     SpaceShip::drawOnGMRadar(window, position, scale, rotation, long_range);
     if (long_range)
     {

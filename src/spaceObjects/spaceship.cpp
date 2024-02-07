@@ -213,6 +213,7 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
     shield_frequency = irandom(0, max_frequency);
     warp_frequency = 0;
     docking_state = DS_NotDocking;
+    docked_and_hidden = false; // SBW
     impulse_acceleration = 20.0;
     energy_level = 1000;
     max_energy_level = 1000;
@@ -242,6 +243,7 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
     registerMemberReplication(&shield_frequency);
     registerMemberReplication(&warp_frequency);
     registerMemberReplication(&docking_state);
+    registerMemberReplication(&docked_style);
     registerMemberReplication(&beam_frequency);
     registerMemberReplication(&combat_maneuver_charge, 0.5);
     registerMemberReplication(&combat_maneuver_boost_request);
@@ -447,10 +449,17 @@ void SpaceShip::applyTemplateValues()
     }
 }
 
+void SpaceShip::draw3D()
+{
+    if (docked_style == DockStyle::Internal) return;
+    ShipTemplateBasedObject::draw3D();
+}
+
 #if FEATURE_3D_RENDERING
 void SpaceShip::draw3DTransparent()
 {
     if (!ship_template) return;
+    if (docked_style == DockStyle::Internal) return;
     ShipTemplateBasedObject::draw3DTransparent();
 
     if ((has_jump_drive && jump_delay > 0.0f) ||
@@ -573,6 +582,8 @@ void SpaceShip::drawBeamOnRadar(sf::RenderTarget& window, sf::Vector2f position,
 
 void SpaceShip::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
 {
+    if (docked_style == DockStyle::Internal) return;
+
     // Draw beam arcs on short-range radar only, and only for fully scanned
     // ships.
     if (!long_range && (!my_spaceship || (getScannedStateFor(my_spaceship) == SS_FullScan)))
@@ -708,6 +719,8 @@ void SpaceShip::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, flo
 
 void SpaceShip::drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
 {
+    if (docked_style == DockStyle::Internal) return;
+
     if (!long_range)
     {
         sf::RectangleShape bar(sf::Vector2f(60, 10));
@@ -722,12 +735,33 @@ void SpaceShip::update(float delta)
 {
     ShipTemplateBasedObject::update(delta);
 
+    // SBW: The latest EE and SeriousProton have a way to hide the body of a Collisionable and would hide the ship completely
+    // when docked internally. This version of SeriousProton doesn't have that capability, so we just blank out the callsign.
+    
+    // If docked internally then hide the callsign, and restore it when undocked
+    if (docked_style == DockStyle::Internal && !docked_and_hidden)
+    {
+        LOG(INFO) << "SBW: Hiding callsign " << getCallSign() << " on internally docked ship";
+        docked_and_hidden = true;
+        hidden_callsign = getCallSign();
+        setCallSign("");
+    }
+    else if (docked_style != DockStyle::Internal && docked_and_hidden)
+    {
+        LOG(INFO) << "SBW: Restoring callsign " << hidden_callsign << " to internally docked ship";
+        docked_and_hidden = false;
+        setCallSign(hidden_callsign);
+    }
+
     if (game_server)
     {
         if (docking_state == DS_Docking)
         {
-            if (!docking_target)
+            if (!docking_target) 
+            {
                 docking_state = DS_NotDocking;
+                docked_style = DockStyle::None;
+            }
             else
                 target_rotation = sf::vector2ToAngle(getPosition() - docking_target->getPosition());
             if (fabs(sf::angleDifference(target_rotation, getRotation())) < 10.0)
@@ -1038,17 +1072,22 @@ void SpaceShip::executeJump(float distance)
     addHeat(SYS_JumpDrive, jump_drive_heat_per_jump);
 }
 
-bool SpaceShip::canBeDockedBy(P<SpaceObject> obj)
+DockStyle SpaceShip::canBeDockedBy(P<SpaceObject> obj)
 {
-    // Hacking LARP
-    return true;
     if (isEnemy(obj) || !ship_template)
-        return false;
+        return DockStyle::None;
     P<SpaceShip> ship = obj;
     if (!ship || !ship->ship_template)
-        return false;
-    return (ship_template->can_be_docked_by_class.count(ship->ship_template->getClass()) +
-	   ship_template->can_be_docked_by_class.count(ship->ship_template->getSubClass())) > 0;
+        return DockStyle::None;
+    if (ship_template->external_dock_classes.count(ship->ship_template->getClass()) > 0)
+        return DockStyle::External;
+    if (ship_template->external_dock_classes.count(ship->ship_template->getSubClass()) > 0)
+        return DockStyle::External;
+    if (ship_template->internal_dock_classes.count(ship->ship_template->getClass()) > 0)
+        return DockStyle::Internal;
+    if (ship_template->internal_dock_classes.count(ship->ship_template->getSubClass()) > 0)
+        return DockStyle::Internal;
+    return DockStyle::None;
 }
 
 void SpaceShip::collide(Collisionable* other, float force)
@@ -1059,6 +1098,7 @@ void SpaceShip::collide(Collisionable* other, float force)
         if (dock_object == docking_target)
         {
             docking_state = DS_Docked;
+            docked_style = docking_target->canBeDockedBy(this);
             docking_offset = sf::rotateVector(getPosition() - other->getPosition(), -other->getRotation());
             float length = sf::length(docking_offset);
             docking_offset = docking_offset / length * (length + 2.0f);
@@ -1082,7 +1122,7 @@ void SpaceShip::initializeJump(float distance)
 
 void SpaceShip::requestDock(P<SpaceObject> target)
 {
-    if (!target || docking_state != DS_NotDocking || !target->canBeDockedBy(this))
+    if (!target || docking_state != DS_NotDocking || target->canBeDockedBy(this) == DockStyle::None)
         return;
     if (sf::length(getPosition() - target->getPosition()) > 1000 + target->getRadius())
         return;
@@ -1098,6 +1138,7 @@ void SpaceShip::requestUndock()
 {
     if (docking_state == DS_Docked)
     {
+        docked_style = DockStyle::None;
         docking_state = DS_NotDocking;
         if (getSystemEffectiveness(SYS_Impulse) > 0.1){
             impulse_request = 0.5;

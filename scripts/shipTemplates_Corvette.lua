@@ -29,6 +29,8 @@ template:setTubeDirection(0, -90)
 template:setTubeDirection(1, -90)
 template:setTubeDirection(2,  90)
 template:setTubeDirection(3,  90)
+template:setExternalDockClasses("Frigate", "Corvette")
+template:setInternalDockClasses("Starfighter")
 
 variation = template:copy("Atlantis"):setLocaleName(_("Atlantis")):setType("playership")
 variation:setDescription(_([[A refitted Atlantis X23 for more general tasks. The large shield system has been replaced with an advanced combat maneuvering systems and improved impulse engines. Its missile loadout is also more diverse. Mistaking the modified Atlantis for an Atlantis X23 would be a deadly mistake.]]))
@@ -231,7 +233,9 @@ template:setRadarTrace("radartrace_smallstation.png")
 template:setHull(150)
 template:setShields(120, 120, 120, 120, 120, 120)
 template:setSpeed(0, 0.5, 0)
-template:setDockClasses("Starfighter", "Frigate", "Drone")
+-- SBW: Template changed 
+-- template:setDockClasses(_("class", "Starfighter"), _("class", "Frigate"))
+template:setDockClasses("Starfighter", "Frigate")
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 30,   0, 4000.0, 1.5, 20)
 template:setBeam(1, 30,  60, 4000.0, 1.5, 20)
@@ -318,7 +322,11 @@ template:setSpeed(50, 6, 10)
 template:setRadarTrace("radar_transport.png")
 template:setJumpDrive(true)
 template:setJumpDriveRange(5000, 100 * 50000) -- The jump carrier can jump a 100x longer distance then normal jump drives.
-template:setDockClasses("Starfighter", "Frigate", "Corvette")
+-- SBW: Interface changed
+-- template:setExternalDockClasses(_("class", "Frigate"), _("class", "Corvette"))
+-- template:setInternalDockClasses(_("class", "Starfighter"))
+template:setExternalDockClasses("Frigate", "Corvette")
+template:setInternalDockClasses("Starfighter")
 template:setDefaultAI("evasion")
 
 

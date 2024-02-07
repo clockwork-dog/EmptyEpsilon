@@ -252,6 +252,8 @@ void CpuShip::orderDock(P<SpaceObject> object)
 
 void CpuShip::drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
 {
+    if (docked_style == DockStyle::Internal) return;
+
     SpaceShip::drawOnGMRadar(window, position, scale, rotation, long_range);
     if (ai)
         ai->drawOnGMRadar(window, position, scale);

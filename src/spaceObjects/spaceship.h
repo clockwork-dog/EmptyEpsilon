@@ -226,13 +226,18 @@ public:
     int32_t target_id[max_target_id];
 
     EDockingState docking_state;
+    DockStyle docked_style;
     P<SpaceObject> docking_target; //Server only
-    sf::Vector2f docking_offset; //Server only
+    sf::Vector2f docking_offset{0, 0}; //Server only
+    
+    bool docked_and_hidden; // SBW
+    string hidden_callsign; // SBW
 
     SpaceShip(string multiplayerClassName, float multiplayer_significant_range=-1);
     virtual ~SpaceShip();
 
 #if FEATURE_3D_RENDERING
+    virtual void draw3D() override;
     virtual void draw3DTransparent() override;
 #endif
     /*!
@@ -300,7 +305,7 @@ public:
      * Check if object can dock with this ship.
      * \param object Object that wants to dock.
      */
-    virtual bool canBeDockedBy(P<SpaceObject> obj) override;
+    virtual DockStyle canBeDockedBy(P<SpaceObject> obj) override;
 
     virtual void collide(Collisionable* other, float force) override;
 
@@ -580,6 +585,7 @@ REGISTER_MULTIPLAYER_ENUM(EWeaponTubeState);
 REGISTER_MULTIPLAYER_ENUM(EMainScreenSetting);
 REGISTER_MULTIPLAYER_ENUM(EMainScreenOverlay);
 REGISTER_MULTIPLAYER_ENUM(EDockingState);
+REGISTER_MULTIPLAYER_ENUM(DockStyle);
 REGISTER_MULTIPLAYER_ENUM(EScannedState);
 REGISTER_MULTIPLAYER_ENUM(EDockType);
 REGISTER_MULTIPLAYER_ENUM(EDockState);

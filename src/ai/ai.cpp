@@ -744,7 +744,7 @@ P<SpaceObject> ShipAI::findBestMissileRestockTarget(sf::Vector2f position, float
         P<SpaceObject> space_object = obj;
         if (!space_object || !owner->isFriendly(space_object) || space_object == target)
             continue;
-        if (!space_object->canBeDockedBy(owner) || !space_object->canRestockMissiles())
+        if (space_object->canBeDockedBy(owner) == DockStyle::None || !space_object->canRestockMissiles())
             continue;
         //calculate score
         sf::Vector2f position_difference = space_object->getPosition() - owner_position;

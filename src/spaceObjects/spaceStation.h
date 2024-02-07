@@ -9,7 +9,7 @@ public:
     SpaceStation();
 
     virtual void drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range);
-    virtual bool canBeDockedBy(P<SpaceObject> obj);
+    virtual DockStyle canBeDockedBy(P<SpaceObject> obj) override;
     virtual void destroyedByDamage(DamageInfo& info);
     virtual void applyTemplateValues();
 

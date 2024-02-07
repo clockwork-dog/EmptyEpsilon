@@ -95,7 +95,8 @@ P<SpaceObject> GuiDockingButton::findDockingTarget()
     foreach(Collisionable, obj, obj_list)
     {
         dock_object = obj;
-        if (dock_object && dock_object != target_spaceship && dock_object->canBeDockedBy(target_spaceship) && (dock_object->getPosition() - target_spaceship->getPosition()) < 1000.0f + dock_object->getRadius())
+            // SBW: Using sf library instead of glm
+            if (dock_object && dock_object != my_spaceship && dock_object->canBeDockedBy(my_spaceship) != DockStyle::None && sf::length(dock_object->getPosition() - my_spaceship->getPosition()) < 1000.0f + dock_object->getRadius())
             break;
         dock_object = NULL;
     }
