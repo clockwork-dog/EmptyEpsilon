@@ -119,6 +119,7 @@ include_directories(${oscpp_SOURCE_DIR}/include)
 set(EXECUTABLE_NAME "EmptyEpsilon")
 set(SOURCES
 	src/main.cpp
+	src/scriptLogging.cpp
 	src/cargo.cpp
 	src/shipCargo.cpp
 	src/threatLevelEstimate.cpp
