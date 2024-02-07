@@ -6,6 +6,7 @@
 #include "gui/gui2_selector.h"
 #include "gameGlobalInfo.h"
 
+#include <regex>
 
 GuiObjectCreationView::GuiObjectCreationView(GuiContainer* owner)
 : GuiOverlay(owner, "OBJECT_CREATE_SCREEN", sf::Color(0, 0, 0, 128))
@@ -24,7 +25,7 @@ GuiObjectCreationView::GuiObjectCreationView(GuiContainer* owner)
         if (index==1)
         {
             cpu_ship_listbox->hide();
-            player_ship_listbox->show();
+            player_ship_listbox->show();    
         }
         else
         {
@@ -44,10 +45,12 @@ GuiObjectCreationView::GuiObjectCreationView(GuiContainer* owner)
     // Listbox
     misc_object_listbox = new GuiListbox(box, "CREATE_MISC_OBJECT", [this](int index, string value)
     {
-        LOG(INFO) << "WHITE: Clicked on button '" << value << "'";          // TODO: Remove
         string script = misc_object_creation_scripts[index];
-        LOG(INFO) << "WHITE: Running script '" << script << "'";            // TODO: Remove
-        setCreateScript(script);
+
+        int selected_faction = faction_selector->getSelectionIndex();
+        string updated_script = std::regex_replace(script, std::regex("\\$FACTION_ID"), std::to_string(selected_faction));
+
+        setCreateScript(updated_script);
     });
 
     misc_object_listbox->setTextSize(20)->setButtonHeight(30)->setPosition(-350, y, ATopRight)->setSize(300, 460);
@@ -57,7 +60,8 @@ GuiObjectCreationView::GuiObjectCreationView(GuiContainer* owner)
     for(string template_name : template_names)
     {
         misc_object_listbox->addEntry(template_name, template_name);
-        misc_object_creation_scripts.push_back("SpaceStation():setRotation(random(0, 360)):setFactionId(" + string(faction_selector->getSelectionIndex()) + "):setTemplate(\"" + template_name + "\")");
+        misc_object_creation_scripts.push_back("SpaceStation():setRotation(random(0, 360)):setFactionId($FACTION_ID):setTemplate(\"" + template_name + "\")");
+        string script = "SpaceStation():setRotation(random(0, 360)):setFactionId($FACTION_ID):setTemplate(\"" + template_name + "\")";
         y += 30;
     }
     
@@ -67,15 +71,15 @@ GuiObjectCreationView::GuiObjectCreationView(GuiContainer* owner)
     y += 30;
     
     misc_object_listbox->addEntry("WARP JAMMER", "Create Warp Jammer");
-    misc_object_creation_scripts.push_back("WarpJammer():setRotation(random(0, 360)):setFactionId(" + string(faction_selector->getSelectionIndex()) + ")");
+    misc_object_creation_scripts.push_back("WarpJammer():setRotation(random(0, 360)):setFactionId($FACTION_ID)");
     y += 30;
 
     misc_object_listbox->addEntry("MINE", "Create Mine");
-    misc_object_creation_scripts.push_back("Mine():setFactionId(" + string(faction_selector->getSelectionIndex()) + ")");
+    misc_object_creation_scripts.push_back("Mine():setFactionId($FACTION_ID)");
     y += 30;
 
     misc_object_listbox->addEntry("SUPPLY DROP", "Supply Drop");
-    misc_object_creation_scripts.push_back("SupplyDrop():setFactionId(" + string(faction_selector->getSelectionIndex()) + "):setEnergy(500):setWeaponStorage('Nuke', 1):setWeaponStorage('Homing', 4):setWeaponStorage('Mine', 2):setWeaponStorage('EMP', 1)");
+    misc_object_creation_scripts.push_back("SupplyDrop():setFactionId($FACTION_ID):setEnergy(500):setWeaponStorage('Nuke', 1):setWeaponStorage('Homing', 4):setWeaponStorage('Mine', 2):setWeaponStorage('EMP', 1)");
     y += 30;
 
     misc_object_listbox->addEntry("ASTEROID", "Asteroid");
