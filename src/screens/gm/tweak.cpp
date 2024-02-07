@@ -737,8 +737,13 @@ void GuiShipTweakSystems::onDraw(sf::RenderTarget& window)
         system_hacked[n]->setValue(target->systems[n].hacked_level);
         system_power_bar[n]->setValue(target->systems[n].power_level);
         system_power_slider[n]->setValue(target->systems[n].power_request);
-        system_repair_bar[n]->setValue(target->systems[n].repair_level);
-        system_repair_slider[n]->setValue(target->systems[n].repair_request);
+        
+        if (gameGlobalInfo->use_nano_repair_crew)
+        {
+            system_repair_bar[n]->setValue(target->systems[n].repair_level);
+            system_repair_slider[n]->setValue(target->systems[n].repair_request);
+        }
+        
         system_instability_level[n]->setValue(target->systems[n].instability_level);
         system_instability_difficulty[n]->setValue(target->systems[n].instability_difficulty);
         system_instability_factor[n]->setValue(target->systems[n].instability_factor);
