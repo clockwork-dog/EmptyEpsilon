@@ -82,10 +82,6 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     GuiAutoLayout* sidebar = new GuiAutoLayout(this, "SIDE_BAR", GuiAutoLayout::LayoutVerticalTopToBottom);
     sidebar->setPosition(-20, 150, ATopRight)->setSize(250, GuiElement::GuiSizeMax);
     
-    // Reputation display.
-    info_reputation = new GuiKeyValueDisplay(sidebar, "INFO_REPUTATION", 0.7, tr("Reputation") + ":", "");
-    info_reputation->setSize(GuiElement::GuiSizeMax, 30);
-
     // Scenario clock display.
     info_clock = new GuiKeyValueDisplay(sidebar, "INFO_CLOCK", 0.7, tr("Clock") + ":", "");
     info_clock->setSize(GuiElement::GuiSizeMax, 30);
@@ -349,7 +345,6 @@ void RelayScreen::onDraw(sf::RenderTarget& window)
         link_to_science_button->setVisible(my_spaceship->getCanLaunchProbe());
         hack_target_button->setVisible(my_spaceship->getCanHack());
 
-        info_reputation->setValue(string(my_spaceship->getReputationPoints(), 0));
         info_clock->setValue(string(gameGlobalInfo->elapsed_time, 0));
         launch_probe_button->setText(tr("Launch Probe") + " (" + string(my_spaceship->scan_probe_stock) + ")");
     }
