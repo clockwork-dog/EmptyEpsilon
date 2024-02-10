@@ -176,9 +176,6 @@ public:
     void setModel(string model_name);
     void setDefaultAI(string default_ai_name);
     void setDockClasses(std::vector<string> classes);
-    // SBW: Lua interface changed
-    // void setExternalDockClasses(const std::vector<string>& classes);
-    // void setInternalDockClasses(const std::vector<string>& classes);
     void setExternalDockClasses(const std::vector<string> classes);
     void setInternalDockClasses(const std::vector<string> classes);
     void setSharesEnergyWithDocked(bool enabled);
