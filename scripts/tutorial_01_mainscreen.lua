@@ -19,7 +19,7 @@ require("utils.lua")
 
 function init()
     --Create the player ship
-    player = PlayerSpaceship():setFaction("Human Navy"):setTemplate("Phobos M3P")
+    player = PlayerSpaceship():setFaction("UCN"):setTemplate("UCS Hoplite Class Destroyer")
     tutorial:setPlayerShip(player)
 
     tutorial:showMessage(_([[Welcome to the EmptyEpsilon tutorial.
@@ -144,10 +144,10 @@ addToSequence(radarTutorial, function() prev_object3:destroy() end)
 addToSequence(radarTutorial, function() prev_object = Nebula():setPosition(8000, 0) end)
 addToSequence(radarTutorial, _([[The rainbow-colored cloud is a nebula. Nebulae block long-range sensors, preventing ships from detecting what's inside of them at distances of more than 5u. Sensors also cannot detect objects behind nebulae.]]))
 addToSequence(radarTutorial, function() prev_object:destroy() end)
-addToSequence(radarTutorial, function() prev_object = CpuShip():setFaction("Human Navy"):setTemplate("Phobos T3"):setPosition(5000, -2500):orderIdle():setScanned(true) end)
-addToSequence(radarTutorial, function() prev_object2 = CpuShip():setFaction("Independent"):setTemplate("Phobos T3"):setPosition(5000, 2500):orderIdle():setScanned(true) end)
-addToSequence(radarTutorial, function() prev_object3 = CpuShip():setFaction("Kraylor"):setTemplate("Phobos T3"):setPosition(5000, -7500):orderIdle():setScanned(true) end)
-addToSequence(radarTutorial, function() prev_object4 = CpuShip():setFaction("Kraylor"):setTemplate("Phobos T3"):setPosition(5000, 7500):orderIdle():setScanned(false) end)
+addToSequence(radarTutorial, function() prev_object = CpuShip():setFaction("UCN"):setTemplate("Gunship"):setPosition(5000, -2500):orderIdle():setScanned(true) end)
+addToSequence(radarTutorial, function() prev_object2 = CpuShip():setFaction("UCN"):setTemplate("Gunship"):setPosition(5000, 2500):orderIdle():setScanned(true) end)
+addToSequence(radarTutorial, function() prev_object3 = CpuShip():setFaction("Corsair"):setTemplate("Gunship"):setPosition(5000, -7500):orderIdle():setScanned(true) end)
+addToSequence(radarTutorial, function() prev_object4 = CpuShip():setFaction("Corsair"):setTemplate("Gunship"):setPosition(5000, 7500):orderIdle():setScanned(false) end)
 addToSequence(radarTutorial, _([[Finally, these are ships. They look like you on radar, and their attitude toward you is reflected by the same colors as stations. In addition to green, blue, and red, ships of unknown attitude appear as gray objects.]]))
 addToSequence(radarTutorial, function() prev_object:destroy() end)
 addToSequence(radarTutorial, function() prev_object2:destroy() end)
