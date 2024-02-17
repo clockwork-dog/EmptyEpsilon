@@ -27,7 +27,7 @@ require("utils.lua")
 
 function init()
     --Create the player ship
-    player = PlayerSpaceship():setFaction("Human Navy"):setTemplate("Phobos M3P")
+    player = PlayerSpaceship():setFaction("UCN"):setTemplate("Phobos M3P")
     tutorial:setPlayerShip(player)
 
     tutorial:showMessage([[Welcome to the EmptyEpsilon tutorial.
@@ -136,13 +136,13 @@ end)
 addToSequence(scienceTutorial, [[Welcome, science officer.
 
 You are the eyes of the ship. Your job is to supply the captain with information. From your station, you can detect and scan objects at a range of up to 30u.]])
-addToSequence(scienceTutorial, function() prev_object = SpaceStation():setTemplate("Medium Station"):setFaction("Human Navy"):setPosition(3000, -15000) end)
-addToSequence(scienceTutorial, function() prev_object2 = CpuShip():setFaction("Human Navy"):setTemplate("Phobos T3"):setPosition(5000, -17000):orderIdle():setScanned(true) end)
+addToSequence(scienceTutorial, function() prev_object = SpaceStation():setTemplate("Medium Station"):setFaction("UCN"):setPosition(3000, -15000) end)
+addToSequence(scienceTutorial, function() prev_object2 = CpuShip():setFaction("UCN"):setTemplate("Phobos T3"):setPosition(5000, -17000):orderIdle():setScanned(true) end)
 addToSequence(scienceTutorial, [[On this radar, you can select objects to get information about them.
 I've added a friendly ship and a station for you to examine. Select them and notice how much information you can observe.
 Heading and distance are of particular importance, as without these, the helms officer will be jumping in the dark.]])
 addToSequence(scienceTutorial, function() prev_object:destroy() end)
-addToSequence(scienceTutorial, function() prev_object = CpuShip():setFaction("Kraylor"):setTemplate("Phobos T3"):setPosition(3000, -15000):orderIdle() end)
+addToSequence(scienceTutorial, function() prev_object = CpuShip():setFaction("corsair"):setTemplate("Phobos T3"):setPosition(3000, -15000):orderIdle() end)
 addToSequence(scienceTutorial, [[I've replaced the friendly station with an unknown ship. Once you select it, notice that you know nothing about this ship.
 To learn about it, you must scan it. Scanning requires you to match your scanner's frequency bands to your target's.
 Scan this ship now.]], function() return prev_object:isScannedBy(player) end)

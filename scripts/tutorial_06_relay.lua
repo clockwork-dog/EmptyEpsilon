@@ -21,7 +21,7 @@ require("utils.lua")
 
 function init()
     --Create the player ship
-    player = PlayerSpaceship():setFaction("Human Navy"):setTemplate("Phobos M3P")
+    player = PlayerSpaceship():setFaction("UCN"):setTemplate("Phobos M3P")
     tutorial:setPlayerShip(player)
 
     tutorial:showMessage([[Welcome to the EmptyEpsilon tutorial.
@@ -133,7 +133,7 @@ addToSequence(relayTutorial, [[Your first responsibility is to coordinate the sh
 
 You can target any station or ship and attempt to communicate with it. Other ships can also attempt to contact you.]])
 addToSequence(relayTutorial, function()
-    prev_object = SpaceStation():setTemplate("Medium Station"):setFaction("Human Navy"):setPosition(3000, -15000)
+    prev_object = SpaceStation():setTemplate("Medium Station"):setFaction("UCN"):setPosition(3000, -15000)
     prev_object:setCommsFunction(function()
         setCommsMessage("You successfully opened communications. Congratulations.");
         addCommsReply("Tell me more!", function()
@@ -151,10 +151,10 @@ addToSequence(relayTutorial, function() tutorial:setMessageToBottomPosition() en
 addToSequence(relayTutorial, function() prev_object:destroy() end)
 addToSequence(relayTutorial, [[Depending on the scenario, you might have different options when communicating with stations.
 They might inform you about new objectives and your mission progress, ask for backup, or resupply your weapons. This is all part of your responsibilities as relay officer.]])
-addToSequence(relayTutorial, function() prev_object = CpuShip():setFaction("Human Navy"):setTemplate("Phobos T3"):setPosition(20000, -20000):orderIdle():setCallSign("DMY-01"):setScanned(true) end)
-addToSequence(relayTutorial, function() prev_object2 = CpuShip():setFaction("Human Navy"):setTemplate("Phobos T3"):setPosition(-24000, 2500):orderIdle():setScanned(true) end)
-addToSequence(relayTutorial, function() prev_object3 = CpuShip():setFaction("Human Navy"):setTemplate("Phobos T3"):setPosition(-17000, -7500):orderIdle():setScanned(true) end)
-addToSequence(relayTutorial, function() prev_object4 = CpuShip():setFaction("Human Navy"):setTemplate("Phobos T3"):setPosition(5400, 7500):orderIdle():setScanned(false) end)
+addToSequence(relayTutorial, function() prev_object = CpuShip():setFaction("UCN"):setTemplate("Phobos T3"):setPosition(20000, -20000):orderIdle():setCallSign("DMY-01"):setScanned(true) end)
+addToSequence(relayTutorial, function() prev_object2 = CpuShip():setFaction("UCN"):setTemplate("Phobos T3"):setPosition(-24000, 2500):orderIdle():setScanned(true) end)
+addToSequence(relayTutorial, function() prev_object3 = CpuShip():setFaction("UCN"):setTemplate("Phobos T3"):setPosition(-17000, -7500):orderIdle():setScanned(true) end)
+addToSequence(relayTutorial, function() prev_object4 = CpuShip():setFaction("UCN"):setTemplate("Phobos T3"):setPosition(5400, 7500):orderIdle():setScanned(false) end)
 addToSequence(relayTutorial, [[Your station also includes this radar map.
 
 On this map, you can detect objects within 5u of all allied ships and stations. Everything else is invisible to you. This gives you a different view from the science officer, because you can scan the contents of nebulae.]])

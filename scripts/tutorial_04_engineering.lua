@@ -18,7 +18,7 @@ require("utils.lua")
 
 function init()
     --Create the player ship
-    player = PlayerSpaceship():setFaction("Human Navy"):setTemplate("Phobos M3P")
+    player = PlayerSpaceship():setFaction("UCN"):setTemplate("Phobos M3P")
     tutorial:setPlayerShip(player)
 
     tutorial:showMessage([[Welcome to the EmptyEpsilon tutorial.
