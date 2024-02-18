@@ -1,19 +1,15 @@
 -- Name: Basics and Captain (Main Screen / Radar)
--- Description: [Station Tutorial]
+-- Description:
+--- ------------------
+--- [Main Screen and Radar Info]
 --- -------------------
---- -This goes over the basics of map awareness and radar systems. Recommended introduction.
----
---- [Station Info]
---- -------------------
---- This tutorial covers not only the captain's tasks, but also some basics for other stations (except for Engineering).
---- Without direct control of the ship, the Captain keeps the crew focused on their goal and makes tactical decisions in combat. 
---- The ship's main screen should be set up on a large monitor or projector so that all players can track their ship's status.
+--- This tutorial covers not only the Command team's tasks, but also basics of some of the ship's operations.
+--- Without direct control of the ship, Command team keeps the crew focused on their goal and helps the crew make crucial decisions. 
 --- 
---- The Captain's tasks include:
---- -Planning the next actions
---- -Co-ordinating combat tactics
---- -Preventing mutiny
---- -Setting priorities
+--- The Command tasks include:
+--- - Planning the next actions
+--- - Setting priorities
+--- - Coordinating combat tactics
 -- Type: Basic
 require("utils.lua")
 
@@ -22,20 +18,20 @@ function init()
     player = PlayerSpaceship():setFaction("UCN"):setTemplate("UCS Hoplite Class Destroyer")
     tutorial:setPlayerShip(player)
 
-    tutorial:showMessage(_([[Welcome to the EmptyEpsilon tutorial.
-Note that this tutorial is designed to give you a quick overview of the basic options for the game, but does not cover every single aspect.
+    tutorial:showMessage(_([[Welcome to the bridge tutorial.
+Note that this tutorial is designed to give you a quick overview of the basic operations, but does not cover every single aspect.
 
-Press next to continue...]]), true)
+Press "Next" to continue]]), true)
     tutorial_list = {
         mainscreenTutorial,
-		radarTutorial
+		radarTutorial,
+        endOfTutorial
     }
     tutorial:onNext(function()
         tutorial_list_index = 1
         startSequence(tutorial_list[tutorial_list_index],tutorial)
     end)
 end
--- TODO: Need to refactor this region into a utility (*Need help LUA hates me)
 --[[ Assist function in creating tutorial sequences --]]
 function startSequence(sequence)
     current_sequence = sequence
@@ -121,34 +117,34 @@ end
 --[[ Radar explanation tutorial ]]
 mainscreenTutorial = createSequence()
 addToSequence(mainscreenTutorial, function() tutorial:switchViewToMainScreen() end)
-addToSequence(mainscreenTutorial, _([[This is the main screen, which displays your ship and the surrounding space.
-While you cannot move the ship from this screen, you can use it to visually identify objects.]]))
+addToSequence(mainscreenTutorial, _([[This is the main screen, which renders surrounding space from on-board cameras.]]))
 
 radarTutorial = createSequence()
 addToSequence(radarTutorial, function() tutorial:switchViewToLongRange() end)
 addToSequence(radarTutorial, _([[Welcome to the long-range radar. This radar can detect objects up to 30u from your ship, depicted at the radar's center. This radar allows you to quickly identify distant objects.]]))
 addToSequence(radarTutorial, function() prev_object = Asteroid():setPosition(5000, 0) end)
-addToSequence(radarTutorial, _([[To the right of your ship is a brown dot. This is an asteroid.
-Asteroid impacts will damage your ship, so avoid hitting them.]]))
+addToSequence(radarTutorial, _([[To the right of your ship is a yellow dot. This is an asteroid.
+On impact, Asteroid will damage your ship, so avoid hitting them.]]))
 addToSequence(radarTutorial, function() prev_object:destroy() end)
 addToSequence(radarTutorial, function() prev_object = Mine():setPosition(5000, 0) end)
 addToSequence(radarTutorial, _([[The white dot is a mine. When you move near a mine, it explodes with a powerful 1u-radius blast. Striking a mine while your shields are down will surely destroy your ship.]]))
 addToSequence(radarTutorial, function() prev_object:destroy() end)
-addToSequence(radarTutorial, function() prev_object = SpaceStation():setTemplate("Medium Station"):setFaction("UCN"):setPosition(5000, 0) end)
+addToSequence(radarTutorial, function() prev_object = SpaceStation():setTemplate("Medium Station"):setFaction("corsair"):setPosition(5000, 0) end)
 addToSequence(radarTutorial, function() prev_object2 = SpaceStation():setTemplate("Large Station"):setFaction("Independent"):setPosition(5000, 5000) end)
-addToSequence(radarTutorial, function() prev_object3 = SpaceStation():setTemplate("Huge Station"):setFaction("corsair"):setPosition(5000, -5000) end)
-addToSequence(radarTutorial, _([[This large dot is a station. Stations can be several different sizes and belong to different factions. The dot's color indicates whether the station is friendly (green), neutral (light blue), or hostile (red).]]))
+addToSequence(radarTutorial, function() prev_object3 = SpaceStation():setTemplate("Huge Station"):setFaction("UCN"):setPosition(5000, -5000) end)
+addToSequence(radarTutorial, _([[Those large objects are space stations, distinguishable by their respective sizes. The colour here indicates whether the station's IFF identifies it as UCN (blue), Independent (white), or Corsair (red). 
+While it is not a given that one identifying as a Corsair will be immediately hostile to you, we have had several run-ins with pirates in recent months.]]))
 addToSequence(radarTutorial, function() prev_object:destroy() end)
 addToSequence(radarTutorial, function() prev_object2:destroy() end)
 addToSequence(radarTutorial, function() prev_object3:destroy() end)
 addToSequence(radarTutorial, function() prev_object = Nebula():setPosition(8000, 0) end)
-addToSequence(radarTutorial, _([[The rainbow-colored cloud is a nebula. Nebulae block long-range sensors, preventing ships from detecting what's inside of them at distances of more than 5u. Sensors also cannot detect objects behind nebulae.]]))
+addToSequence(radarTutorial, _([[The rainbow-colored cloud is a nebula. Nebulae block long-range sensors, preventing ships from detecting what is inside of them at distances of more than 5u. Sensors also cannot detect objects behind nebulae.]]))
 addToSequence(radarTutorial, function() prev_object:destroy() end)
-addToSequence(radarTutorial, function() prev_object = CpuShip():setFaction("UCN"):setTemplate("Gunship"):setPosition(5000, -2500):orderIdle():setScanned(true) end)
-addToSequence(radarTutorial, function() prev_object2 = CpuShip():setFaction("UCN"):setTemplate("Gunship"):setPosition(5000, 2500):orderIdle():setScanned(true) end)
-addToSequence(radarTutorial, function() prev_object3 = CpuShip():setFaction("Corsair"):setTemplate("Gunship"):setPosition(5000, -7500):orderIdle():setScanned(true) end)
-addToSequence(radarTutorial, function() prev_object4 = CpuShip():setFaction("Corsair"):setTemplate("Gunship"):setPosition(5000, 7500):orderIdle():setScanned(false) end)
-addToSequence(radarTutorial, _([[Finally, these are ships. They look like you on radar, and their attitude toward you is reflected by the same colors as stations. In addition to green, blue, and red, ships of unknown attitude appear as gray objects.]]))
+addToSequence(radarTutorial, function() prev_object = CpuShip():setFaction("UCN"):setTemplate("King George Battleship"):setCallSign("UCS Warspite"):setPosition(5000, -2500):orderIdle():setScanned(true) end)
+addToSequence(radarTutorial, function() prev_object2 = CpuShip():setFaction("UCN"):setTemplate("UCS Skirmish Frigate"):setPosition(5000, 2500):setCallSign("UCS Havock"):orderIdle():setScanned(true) end)
+addToSequence(radarTutorial, function() prev_object3 = CpuShip():setFaction("Independent"):setTemplate("Gunship"):setCallSign("Wind"):setPosition(5000, -7500):orderIdle():setScanned(true) end)
+addToSequence(radarTutorial, function() prev_object4 = CpuShip():setFaction("corsair"):setTemplate("Gunship"):setPosition(5000, 7500):orderIdle():setScanned(false) end)
+addToSequence(radarTutorial, _([[Finally, these are ships. Each class of a ship has a different icon assigned to it. Top to bottom, in front of you are a Gunship, a Battleship, a Frigate and an unscanned ship. Unscanned ships appear as gray arrows.]]))
 addToSequence(radarTutorial, function() prev_object:destroy() end)
 addToSequence(radarTutorial, function() prev_object2:destroy() end)
 addToSequence(radarTutorial, function() prev_object3:destroy() end)
@@ -156,7 +152,8 @@ addToSequence(radarTutorial, function() prev_object4:destroy() end)
 addToSequence(radarTutorial, _([[Next, we will look at the short-range radar.]]))
 addToSequence(radarTutorial, function() tutorial:switchViewToTactical() end)
 addToSequence(radarTutorial, _([[The short-range radar can detect objects up to 5u from your ship. It also depicts the range of your own beam weapons.
-Your ship has 2 beam weapons aimed forward. Each type of ship has different beam weapon layouts, with different ranges and locations.]]))
+Beam weapons are distinguished by colour as follows: red indicates Energy beam, yellow indicates Heat beam, and blue indicates EMP beam. In addition, your ship is equipped with a tractor beam. Each type of ship has different beam weapon layouts, with different ranges and locations.]]))
 endOfTutorial = createSequence()
 addToSequence(endOfTutorial, function() tutorial:switchViewToMainScreen() end)
-addToSequence(endOfTutorial, _([[This concludes main screen and radar tutorial. While we have covered the basics, there are more advanced features in the game that you might discover.]]))
+addToSequence(endOfTutorial, _([[This concludes main screen and radar tutorial, there is plenty more for you to learn on the job about your ship's Command.
+Please don't press anything else on your screen, and let the officer taking you through the tutorial know that you have finished training.]]))

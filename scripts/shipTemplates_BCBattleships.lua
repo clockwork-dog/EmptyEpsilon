@@ -9,6 +9,7 @@ template:setDescription([[The King George class Battleship is the pinnacle of Co
 template:setRadarTrace("radar_battleship.png")
 template:setHull(800)
 template:setShields(600, 600, 600, 600, 600, 600)
+template:setWarpSpeed(800)
 template:setSpeed(30, 2.5, 3)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0,100, -20, 3000.0, 6.0, 20)
@@ -31,6 +32,8 @@ template:setTubeDirection(5, -40)
 template:setTubeDirection(6,  5)
 template:setTubeDirection(7, -5)
 template:setDockClasses("Starfighter", "Frigate", "Destroyer", "Cruiser")
+-- template:setExternalDockClasses("Frigate", "Destroyer", "Cruiser")
+-- template:setInternalDockClasses("Starfighter")
 template:setSharesEnergyWithDocked(true)
 
 variation = template:copy("CNS King George Battleship"):setRecorded(false)
@@ -49,6 +52,7 @@ variation:setCombatManeuver(400, 250)
 variation:setShields(750, 750, 750, 750)
 variation:setHull(850)
 variation:setSpeed(40, 4, 5)
+variation:setEnergyStorage(1500)
 
 variation:addRoomSystem(1, 0, 2, 1, "Maneuver");
 variation:addRoomSystem(1, 1, 2, 1, "BeamWeapons");
@@ -86,6 +90,7 @@ template:setDescription([[The Centurion class Battleship is the first of the Bat
 template:setRadarTrace("radar_battleship.png")
 template:setHull(1000)
 template:setShields(750, 750, 750, 700, 700, 700)
+template:setWarpSpeed(1000)
 template:setSpeed(60, 6, 8)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0,100, -90, 3000.0, 3.0, 25)
@@ -126,6 +131,8 @@ template:setTubeDirection(5, 90)
 template:setTubeDirection(6, 180)
 template:setTubeDirection(7, 180)
 template:setDockClasses("Starfighter", "Frigate", "Destroyer", "Cruiser")
+-- template:setExternalDockClasses("Frigate", "Destroyer", "Cruiser")
+-- template:setInternalDockClasses("Starfighter")
 template:setSharesEnergyWithDocked(true)
 template:setTractorBeam(5000, 100)
 
@@ -182,6 +189,7 @@ template:setDescription([[The President class Carrier is the first of the Carrie
 template:setRadarTrace("radar_ktlitan_destroyer")
 template:setHull(900)
 template:setShields(750, 750, 750, 700, 700, 700)
+template:setWarpSpeed(1000)
 template:setSpeed(60, 6, 8)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0,100, -90, 3000.0, 4.0, 25)
@@ -209,6 +217,7 @@ template:setTubeStation(1,2)
 template:setTubeStation(2,2)
 template:setTubeStation(3,2)
 template:setTubeStation(4,2)
+template:setEnergyStorage(1500)
 
 template:setDockClasses("Starfighter", "Frigate", "Destroyer", "Cruiser")
 template:setSharesEnergyWithDocked(true)
@@ -229,6 +238,7 @@ variation:setSpeed(60, 8, 10)
 variation:weaponTubeDisallowMissle(0, "Mine"):weaponTubeDisallowMissle(1, "Mine")
 variation:weaponTubeDisallowMissle(2, "Mine"):weaponTubeDisallowMissle(3, "Mine")
 variation:setWeaponTubeExclusiveFor(4, "Mine")
+variation:setEnergyStorage(1500)
 
 variation:addRoomSystem(1, 0, 2, 1, "Maneuver");
 variation:addRoomSystem(1, 1, 2, 1, "BeamWeapons");
@@ -266,6 +276,7 @@ template:setDescription([[The Merkel Battleship is the pinnacle of European Fede
 template:setRadarTrace("radar_battleship.png")
 template:setHull(750)
 template:setShields(650, 400, 650, 400)
+template:setWarpSpeed(800)
 template:setSpeed(35, 3, 3.5)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 100, -10, 3000.0, 8.0, 12)
@@ -303,6 +314,7 @@ template:setDescription([[The Bezos class Battleship is a heavy linebreaker, des
 template:setRadarTrace("radar_battleship.png")
 template:setHull(700)
 template:setShields(400, 350, 400, 350)
+template:setWarpSpeed(800)
 template:setSpeed(35, 5, 8)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 80, -20, 3000.0, 8.0, 15)
@@ -334,6 +346,7 @@ template:setDescription([[The Lenin class Battleship is a devestating war machin
 template:setRadarTrace("radar_battleship.png")
 template:setHull(850)
 template:setShields(500, 500, 500, 500, 500, 500)
+template:setWarpSpeed(800)
 template:setSpeed(40, 6, 10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 60, -20, 3500.0, 4.0, 25)
@@ -364,6 +377,7 @@ template:setDescription([[The Washington class Battleship is remarkable engine o
 template:setRadarTrace("radar_battleship.png")
 template:setHull(750)
 template:setShields(500, 500, 500, 500, 500, 500)
+template:setWarpSpeed(800)
 template:setSpeed(60, 7, 10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 60, -20, 3500.0, 4.0, 20)
@@ -397,6 +411,7 @@ template:setDescription([[The Jormungandr class Battleship is the largest Brutal
 template:setRadarTrace("radar_battleship.png")
 template:setHull(750)
 template:setShields(500, 500, 500, 500, 500, 500)
+template:setWarpSpeed(800)
 template:setSpeed(25, 4, 6)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 60, -20, 3500.0, 4.0, 20)
@@ -411,6 +426,8 @@ template:setWeaponStorage("Homing", 60)
 template:setWeaponStorage("EMP", 20)
 template:setWeaponStorage("Nuke", 6)
 template:setDockClasses("Starfighter", "Frigate", "Destroyer", "Cruiser")
+-- template:setExternalDockClasses("Frigate", "Destroyer", "Cruiser")
+-- template:setInternalDockClasses("Starfighter")
 template:setSharesEnergyWithDocked(true) 
 
 template = ShipTemplate():setName("BRU Leviathan Carrier"):setClass("Carrier", "Leviathan"):setModel("ProgenitorCarrierBlack"):setRecorded(false)
@@ -418,6 +435,7 @@ template:setDescription([[The Leviathan class Carrier operates as a base-ship fo
 template:setRadarTrace("radar_piranha.png")
 template:setHull(650)
 template:setShields(650, 600, 600, 600, 600, 600)
+template:setWarpSpeed(800)
 template:setSpeed(25, 4, 6)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 60, -20, 3500.0, 4.0, 20)
@@ -432,6 +450,8 @@ template:setWeaponStorage("Homing", 60)
 template:setWeaponStorage("EMP", 20)
 --template:setWeaponStorage("Nuke", 6)
 template:setDockClasses("Starfighter", "Frigate", "Destroyer", "Cruiser")
+-- template:setExternalDockClasses("Frigate", "Destroyer", "Cruiser")
+-- template:setInternalDockClasses("Starfighter")
 template:setSharesEnergyWithDocked(true) 
 
 
@@ -440,6 +460,7 @@ template = ShipTemplate():setName(""):setModel("Mjolnir Titan"):setRecorded(fals
 template:setRadarTrace("radar_ktlitan_destroyer.png")
 template:setHull(1000)
 template:setShields(500, 500, 500, 500, 500, 500)
+template:setWarpSpeed(1500)
 template:setSpeed(60, 7, 10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 60, -20, 3500.0, 4.0, 20)
@@ -454,6 +475,8 @@ template:setWeaponStorage("Homing", 60)
 template:setWeaponStorage("EMP", 40)
 template:setWeaponStorage("Nuke", 20)
 template:setDockClasses("Starfighter", "Frigate", "Destroyer", "Cruiser", "Battleship")
+-- template:setExternalDockClasses("Frigate", "Destroyer", "Cruiser", "Battleship")
+-- template:setInternalDockClasses("Starfighter")
 template:setSharesEnergyWithDocked(true)
 
 --template = ShipTemplate():setName("Lancelot"):setClass("Battleship", "Lancelot"):setModel("Lancelot")

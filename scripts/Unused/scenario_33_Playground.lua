@@ -87,8 +87,7 @@ function generateShield()
 	if playerIsInRange == true then
         if defaultPlayerShieldsMax == nil then
 		  player:addToShipLog("Entering generator zone", "Magenta", "Helms")
-		  -- declaring Max for Talavaar specifically
-		  defaultPlayerShieldsMax = 200
+		  defaultPlayerShieldsMax = player:getShieldMax()
 		  -- this records levels of shields at the moment you enter the generator's AOE
 		  frontShield = player:getShieldLevel(0)
 		  rearShield = player: getShieldLevel(1)

@@ -1,41 +1,42 @@
 -- Name: Science
--- Description: [Station Tutorial]
+-- Description: 
 --- -------------------
---- -Goes over science station.
----
---- [Station Info]
+--- [Science Screens Info]
 --- -------------------
 --- Long-range Radar: 
---- -The Science station has a long-range radar that can locate ships and objects at a distance of up to 25U. The Science officer's most important task is to report the sector's status and any changes within it. On the edge of the radar are colored bands of signal interference that can vaguely suggest the presence of objects or space hazards even further from the ship, but it's up to the Science officer to interpret them.
+--- - The Science station has a long-range radar that can locate ships and objects at a distance of up to 25U. The Science officer's most important task is to report the sector's status and any changes within it. On the edge of the radar are colored bands of signal interference that can vaguely suggest the presence of objects or space hazards even further from the ship. It's up to the Science team to interpret them.
 ---
 --- Scanning: 
---- -You can scan ships to get more information about them. The Science officer must align two of the ship's scanning frequencies with a target to complete the scan. Most ships are unknown (gray) to your crew at the start of a scenario and must be scanned before they can be identified as a friend (green), foe (red), or neutral (blue). A scan also identifies the ship's type, which the Science officer can use to identify its capabilities in the station's database.
+--- - You can scan ships to get more information about them. The Science officer must align two of the ship's scanning frequencies with a target to complete the scan. Scanning a ship, or any object, will reveal their IFF as well as other valuable information.
 ---
 --- Deep Scans: 
---- -A second, more difficult scan yields more information about the ship, including its shield and beam frequencies. The Science officer must align both the frequency and modulation of each scan type to complete a deep scan. The helms and weapons screen can also see the firing arcs of deep-scanned ships, which help them guide your ship from being shot by their beams.
+--- - A second, more difficult scan yields more information about the ship, including its shield and beam frequencies. The Operations team can also see the firing arcs of deep-scanned ships, but they cannot see relevant frequencies, and you will have to relay this information to them.
+--- - Link the scanned vessel or object to Analysis, to view all information about it on the same screen.
 ---
 --- Nebulae: 
---- -Nebulae block the ship's long-range scanner. The Science officer cannot see what's inside or behind them, and while in a nebula the ship's radars cannot detect what's outside of it. These traits make nebulae ideal places to hide for repairs or stage an ambush. To avoid surprises around nebulae, relay information about where you can and cannot see objects to both the Captain and the Relay officer.
+--- - Nebulae block the ship's long-range scanner. The Science officer cannot see what's inside or behind them, and while in a nebula the ship's radars cannot detect what's outside of it.
 ---
 --- Probe View: 
---- -The Relay officer can launch probes and link one to the Science station. The Science officer can view the probe's short-range sensor data to scan ships within its range, even if the probe is far from the ship's long-range scanners or in a nebula.
+--- - You can launch probes from Relay and Navigation screens, and those can be linked Science station, as well as have their own view screen. 
+--- - The Science officer can view the probe's short-range sensor data to scan ships within its range, even if the probe is far from the ship's long-range scanners or in a nebula.
 ---
 --- Database: 
---- -The Science officer can access the ship's database of all known ships, as well as data about weapons and space hazards. This can be vital when assessing a ship's capabilities without a deep scan, or for help navigating a black hole, wormhole, or other anomaly.
+--- - The Science officer can access the ship's database of all known ships, as well as data about weapons and space hazards. This can be vital when assessing a ship's capabilities without a deep scan, or for help navigating hazardous terrain.
 -- Type: Basic
 require("utils.lua")
 
 function init()
     --Create the player ship
-    player = PlayerSpaceship():setFaction("UCN"):setTemplate("Phobos M3P")
+    player = PlayerSpaceship():setFaction("UCN"):setTemplate("UCS Skirmish Class Frigate")
     tutorial:setPlayerShip(player)
 
-    tutorial:showMessage([[Welcome to the EmptyEpsilon tutorial.
-Note that this tutorial is designed to give you a quick overview of the basic options for the game, but does not cover every single aspect.
-
-Press next to continue...]], true)
+    tutorial:showMessage([[Welcome to the bridge tutorial.
+    Note that this tutorial is designed to give you a quick overview of the basic operations, but does not cover every single aspect.
+    
+    Press "Next" to continue]], true)
     tutorial_list = {
-        scienceTutorial
+        scienceTutorial,
+        endOfTutorial
     }
     tutorial:onNext(function()
         tutorial_list_index = 1
@@ -133,16 +134,15 @@ addToSequence(scienceTutorial, function()
     tutorial:setMessageToBottomPosition()
     resetPlayerShip()
 end)
-addToSequence(scienceTutorial, [[Welcome, science officer.
-
-You are the eyes of the ship. Your job is to supply the captain with information. From your station, you can detect and scan objects at a range of up to 30u.]])
-addToSequence(scienceTutorial, function() prev_object = SpaceStation():setTemplate("Medium Station"):setFaction("UCN"):setPosition(3000, -15000) end)
-addToSequence(scienceTutorial, function() prev_object2 = CpuShip():setFaction("UCN"):setTemplate("Phobos T3"):setPosition(5000, -17000):orderIdle():setScanned(true) end)
+addToSequence(scienceTutorial, [[As member of the Science team, you are the eyes of the ship. 
+Your job is to discover and distribute information about all happenstance outside of your ship. From the Science station, you can detect and scan objects at a range of up to 30u.]])
+addToSequence(scienceTutorial, function() prev_object = SpaceStation():setTemplate("Medium Station"):setCallSign("Phoenix"):setFaction("UCN"):setPosition(3000, -15000) end)
+addToSequence(scienceTutorial, function() prev_object2 = CpuShip():setFaction("UCN"):setTemplate("King George Battleship"):setCallSign("UCS Warspite"):setPosition(5000, -17000):setDescriptions(
+    "King George Class Battleship", "Current orders: Establish Base in Adamas Belt."):addInfos(1, "Fabrication date", "2091"):addInfos(2, "Current Commander", "Captain TBD"):addInfos(3, "Number of Personnel", "182"):addInfos(4, "Life signs", "Strong"):orderIdle():setScanned(true) end)
 addToSequence(scienceTutorial, [[On this radar, you can select objects to get information about them.
-I've added a friendly ship and a station for you to examine. Select them and notice how much information you can observe.
-Heading and distance are of particular importance, as without these, the helms officer will be jumping in the dark.]])
+I've added a UCN ship and a station for you to examine. Select them and notice how much information you can observe.]])
 addToSequence(scienceTutorial, function() prev_object:destroy() end)
-addToSequence(scienceTutorial, function() prev_object = CpuShip():setFaction("corsair"):setTemplate("Phobos T3"):setPosition(3000, -15000):orderIdle() end)
+addToSequence(scienceTutorial, function() prev_object = CpuShip():setFaction("corsair"):setTemplate("Gunship"):setPosition(3000, -15000):orderIdle() end)
 addToSequence(scienceTutorial, [[I've replaced the friendly station with an unknown ship. Once you select it, notice that you know nothing about this ship.
 To learn about it, you must scan it. Scanning requires you to match your scanner's frequency bands to your target's.
 Scan this ship now.]], function() return prev_object:isScannedBy(player) end)
@@ -157,7 +157,12 @@ addToSequence(scienceTutorial, function() tutorial:setMessageToTopPosition() end
 addToSequence(scienceTutorial, [[Next to the long-range radar, the science station can also access the science database.
 
 In this database, you can look up details on things like ship types, weapons, and other objects.]])
-addToSequence(scienceTutorial, [[Remember, your job is to supply information. Knowing the location and status of other ships is vital to your captain.
+addToSequence(scienceTutorial, [[Remember, that the Science team's job is to supply information. Knowing the location and status of other ships is vital to your vessel's operation.
 
-Without your information, the crew is mostly blind.]])
+Without you, the crew is flying blind.]])
+
+endOfTutorial = createSequence()
+addToSequence(endOfTutorial, function() tutorial:switchViewToMainScreen() end)
+addToSequence(endOfTutorial, _([[This concludes the Science screen tutorial, there is plenty more for you to learn on the job about your ship's Operations.
+Please don't press anything else on your screen, and let the officer taking you through the tutorial know that you have finished training.]]))
 

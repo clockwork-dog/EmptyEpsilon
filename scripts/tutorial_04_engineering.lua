@@ -1,33 +1,33 @@
 -- Name: Engineering
--- Description: [Station Tutorial]
+-- Description:
 --- -------------------
---- -Goes over controlling the power of each station and repairs.
----
---- [Station Info]
+--- [Engineering Info]
 --- -------------------
 ---Power Management: 
---- -The Engineering officer can route power to systems by selecting a system and moving its power slider. Giving a system more power increases its output. For instance, an overpowered reactor produces more energy, overpowered shields reduce more damage and regenerate faster, and overpowered impulse engines increase its maximum speed. Overpowering a system (above 100%) also increases its heat generation and, except for the reactor, its energy draw. Underpowering a system (below 100%) likewise reduces heat output and energy draw.
+--- - The Engineering officers can route power to systems by selecting a system and moving its power slider. Giving a system more power increases its output. For instance, an overpowered reactor produces more energy, overpowered shields reduce more damage and regenerate faster, and overpowered impulse engines increase its maximum speed. Overpowering a system (above 100%) also increases its heat generation and, except for the reactor, its energy draw. Underpowering a system (below 100%) likewise reduces heat output and energy draw.
 ---
 ---Coolant Management: 
---- -By adding coolant to a system, the Engineering officer can reduce its temperature and prevent the system from damaging the ship. The ship has an unlimited reseve of coolant, but a finite amount of coolant can be applied at any given time, so the Engineering officer must budget how much coolant each system can receive. A system's change in temperature is indicated by white arrows in the temperature column. The brighter an arrow is, the larger the trend.
+--- - By adding coolant to a system, an Engineering officer can reduce its temperature and prevent the system from damaging the ship. The ship has an unlimited reseve of coolant, but a finite amount of coolant can be applied at any given time, so the Engineering officer must budget how much coolant each system can receive. A system's change in temperature is indicated by white arrows in the temperature column. The brighter an arrow is, the larger the trend.
 ---
 ---Repairs: 
---- -When systems are damaged by being shot, colliding with space hazards, or overheating, the Engineering officer can dispatch repair crews to the system for repairs. Each systems has a damage state between -100% to 100%. Systems below 100% function suboptimally, in much the same way as if they are underpowered. Once a system is at or below 0%, it completely stops functioning until it is repaired. Systems can be repaired by sending a repair crew to the room containing the system. Hull damage affects the entire ship, and docking at a station can repair it, but hull repairs progress very slowly.
+--- - When systems are damaged by being shot, colliding with space hazards, or overheating, the Engineering officer can dispatch repair nano bots to the system for repairs. Each systems has a damage state between -100% to 100%. Systems below 100% function suboptimally, in much the same way as if they are underpowered. Once a system is at or below 0%, it completely stops functioning until it is repaired. Systems can be repaired by sending a repair nano bots to the room containing the system.
+--- - Physical repairs will have to be enacted to repair any system once its functionality drops to below 0%
+--- - Enginners onboard your ship will be unable to repair any hull damage, however, if you dock to a station of a large ship, they may be able to assist you in that regard.
 -- Type: Basic
 require("utils.lua")
 
 function init()
     --Create the player ship
-    player = PlayerSpaceship():setFaction("UCN"):setTemplate("Phobos M3P")
+    player = PlayerSpaceship():setFaction("UCN"):setTemplate("UCS Hoplite Class Destroyer")
     tutorial:setPlayerShip(player)
 
-    tutorial:showMessage([[Welcome to the EmptyEpsilon tutorial.
-Note that this tutorial is designed to give you a quick overview of the basic options for the game, but does not cover every single aspect.
-
-Press next to continue...]], true)
+    tutorial:showMessage([[Welcome to the bridge tutorial.
+    Note that this tutorial is designed to give you a quick overview of the basic operations, but does not cover every single aspect.
+    
+    Press "Next" to continue]], true)
     tutorial_list = {
-        engineeringTutorial
-
+        engineeringTutorial,
+        endOfTutorial
     }
     tutorial:onNext(function()
         tutorial_list_index = 1
@@ -124,20 +124,21 @@ addToSequence(engineeringTutorial, function()
     tutorial:setMessageToTopPosition()
     resetPlayerShip()
 end)
-addToSequence(engineeringTutorial, [[Welcome to engineering.
-Engineering is split into two parts. The top part shows your ship's interior, including damage control teams stationed throughout.
-The bottom part controls power and coolant levels of your ship's systems.]])
+addToSequence(engineeringTutorial, [[Welcome to Engineering.
+Engineering screens are separated into power management screen, which is reponsible for powering and cooling the systems on your ship, and demage control, which shows ship's interior and visual repsentation of your ship's repair nanobots.
+You will also have access to the ship's system overview.
+For the purposes of this tutorial, however, those screens have been combined into one]])
 addToSequence(engineeringTutorial, function() player:setWarpDrive(true) end)
 addToSequence(engineeringTutorial, function() player:setSystemHeat("warp", 0.8) end)
 addToSequence(engineeringTutorial, [[First, we will explain your control over your ship's systems.
 Each row on the bottom area of the screen represents one of your ship's system, and each system has a damage level, heat level, power level, and coolant level.
 
-I've overheated your warp system. An overheating system can damage your ship. You can prevent this by putting coolant in your warp system. Select the warp system and increase the coolant slider.]], function() return player:getSystemHeat("warp") < 0.05 end)
+Your warp system is getting hot. An overheating system can damage your ship. You can prevent this by putting coolant in your warp system. Select the warp system and increase the coolant slider.]], function() return player:getSystemHeat("warp") < 0.05 end)
 addToSequence(engineeringTutorial, function() player:setSystemHeat("impulse", 0.8) end)
-addToSequence(engineeringTutorial, [[I've also overheated the impulse system. As before, increase the system's coolant level to mitigate the effect. Note that the warp system's coolant level is automatically reduced to allow for coolant in the impulse system.
+addToSequence(engineeringTutorial, [[Now your impulse system is overheating. As before, increase the system's coolant level to mitigate the effect. Note that the warp system's coolant level is automatically reduced to allow for coolant in the impulse system.
 
 This is because you have a limited amount of coolant available to distribute this across your ship's systems.]], function() return player:getSystemHeat("impulse") < 0.05 end)
-addToSequence(engineeringTutorial, [[Good! Next up: power levels.
+addToSequence(engineeringTutorial, [[Very good. Next up: power levels.
 You can manage each system's power level independently. Adding power to a system makes it perform more effectively, but also generates more heat, and thus requires coolant to prevent it from overheating and damaging the system.
 
 Maximize the power to the front shield system.]], function() return player:getSystemPower("frontshield") > 2.5 end)
@@ -150,11 +151,11 @@ addToSequence(engineeringTutorial, [[Note that as the system overheats, it takes
 
 Systems can also take damage when your ship is hit while the shields are down.]])
 addToSequence(engineeringTutorial, function() tutorial:setMessageToBottomPosition() end)
-addToSequence(engineeringTutorial, [[In this top area, you see your damage control teams in your ship.]])
+addToSequence(engineeringTutorial, [[In this top area, you see your nanobots.]])
 addToSequence(engineeringTutorial, [[The front shield system is damaged, as indicated by the color of this room's outline.
 
 Select a damage control team from elsewhere on the ship by pressing it, then press on that room to initiate repairs.
-(Repairs will take a while.)]], function() player:commandSetSystemPowerRequest("frontshield", 0.0) return player:getSystemHealth("frontshield") > 0.9 end)
+Repairs may take a while.]], function() player:commandSetSystemPowerRequest("frontshield", 0.0) return player:getSystemHealth("frontshield") > 0.9 end)
 addToSequence(engineeringTutorial, function() tutorial:setMessageToTopPosition() end)
 addToSequence(engineeringTutorial, [[Good. Now you know your most important tasks. Next, we'll go over each system's function in detail.
 Remember, each system performs better with more power, but performs less well when damaged. Your job is to keep vital systems running as well as you can.]])
@@ -164,7 +165,7 @@ The reactor generates energy. Adding power to the reactor increases your energy 
 addToSequence(engineeringTutorial, [[Beam Weapons:
 
 Adding power to the beam weapons system increases their rate of fire, which causes them to do more damage.
-Note that every beam you fire adds additional heat to the system.]])
+Note that every tine the beam weapon fires it additional heat to the system.]])
 addToSequence(engineeringTutorial, [[Missile System:
 
 Increased missile system power lowers the reload time of weapon tubes.]])
@@ -173,14 +174,18 @@ addToSequence(engineeringTutorial, [[Maneuvering:
 Increasing power to the maneuvering system allows the ship to turn faster. It also increases the recharge rate for the combat maneuvering system.]])
 addToSequence(engineeringTutorial, [[Impulse Engines:
 
-Adding power to the impulse engines increases your impulse flight speed.]])
+Adding power to the impulse engines increases your impulse engine speed.]])
 addToSequence(engineeringTutorial, [[Warp Drive:
 
-Adding power to the warp drive increases your warp drive flight speed.]])
-addToSequence(engineeringTutorial, [[Jump Drive:
-
-A higher-powered jump drive recharges faster and has a shorter delay before jumping.]])
+Adding power to the warp drive increases your warp drive speed.]])
 addToSequence(engineeringTutorial, [[Shields:
 
 Additional power in the shield system increases their rate of recharge, and decreases the amount of degradation your shields sustain when damaged.]])
 addToSequence(engineeringTutorial, [[This concludes the overview of the engineering station. Be sure to keep your ship running in top condition!]])
+
+endOfTutorial = createSequence()
+addToSequence(endOfTutorial, function() tutorial:switchViewToMainScreen() end)
+addToSequence(endOfTutorial, _([[This concludes the Engineering screens tutorial, there is plenty more for you to learn on the job about your ship's Engineering.
+Please don't press anything else on your screen, and let the officer taking you through the tutorial know that you have finished training.]]))
+
+

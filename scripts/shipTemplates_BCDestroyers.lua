@@ -14,6 +14,7 @@ template = ShipTemplate():setName("Talavaar Destroyer"):setClass("Destroyer", "T
 template:setRadarTrace("radar_adv_gunship.png")
 template:setHull(100)
 template:setShields(200, 200, 200, 200)
+template:setWarpSpeed(800)
 template:setSpeed(30, 3.5, 5)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0,100, -20, 1500.0, 6.0, 8)
@@ -42,6 +43,8 @@ variation:setTubes(5, 8.0) -- Amount of torpedo tubes, and loading time of the t
 variation:weaponTubeDisallowMissle(0, "Mine"):weaponTubeDisallowMissle(1, "Mine")
 variation:weaponTubeDisallowMissle(2, "Mine"):weaponTubeDisallowMissle(3, "Mine")
 variation:setTubeDirection(4, 180):setWeaponTubeExclusiveFor(4, "Mine")
+variation:setEnergyStorage(1500)
+variation:setRepairCrewCount(3)
 
 variation:addRoomSystem(1, 0, 2, 1, "Maneuver");
 variation:addRoomSystem(1, 1, 2, 1, "BeamWeapons");
@@ -95,6 +98,7 @@ template = ShipTemplate():setName("Mirabello Destroyer"):setClass("Destroyer", "
 template:setRadarTrace("radar_adv_gunship.png")
 template:setHull(200)
 template:setShields(450, 350, 150, 150, 350)
+template:setWarpSpeed(800)
 template:setSpeed(35, 6, 10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 60, -10, 2000.0, 8.0, 11)
@@ -128,6 +132,7 @@ template = ShipTemplate():setName("Arquebuse Destroyer"):setClass("Destroyer", "
 template:setRadarTrace("radar_adv_gunship.png")
 template:setHull(150)
 template:setShields(200, 350, 200, 350)
+template:setWarpSpeed(800)
 template:setSpeed(90, 20, 20)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 60, -45, 2500.0, 8.0, 20)
@@ -151,6 +156,7 @@ template = ShipTemplate():setName("Musk Destroyer"):setClass("Destroyer", "Musk"
 template:setRadarTrace("radar_adv_gunship.png")
 template:setHull(300)
 template:setShields(200, 200, 150, 150)
+template:setWarpSpeed(800)
 template:setSpeed(35, 6, 10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 60, -20, 2000.0, 8.0, 11)
@@ -174,6 +180,7 @@ template = ShipTemplate():setName("Zhengzhou Destroyer"):setClass("Destroyer", "
 template:setRadarTrace("radar_adv_gunship.png")
 template:setHull(200)
 template:setShields(250, 250, 150, 150, 250)
+template:setWarpSpeed(800)
 template:setSpeed(60, 10, 15)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 120, -20, 1500.0, 4.0, 11)
@@ -199,6 +206,7 @@ template = ShipTemplate():setName("Kursk Destroyer"):setClass("Destroyer", "Kurs
 template:setRadarTrace("radar_adv_gunship.png")
 template:setHull(300)
 template:setShields(350, 350, 150, 150, 250)
+template:setWarpSpeed(800)
 template:setSpeed(40, 8, 10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 80, -20, 1800.0, 4.0, 11)
@@ -220,6 +228,7 @@ template = ShipTemplate():setName("Chikuma Stealth Destroyer"):setClass("Destroy
 template:setRadarTrace("radar_cloak.png")
 template:setHull(250)
 template:setShields(250, 250, 250, 250)
+template:setWarpSpeed(800)
 template:setSpeed(60, 10, 15)
 
 template:setTubes(2, 15.0)
@@ -237,6 +246,7 @@ template = ShipTemplate():setName("BRU Kraken Destroyer"):setClass("Destroyer", 
 template:setRadarTrace("radar_adv_gunship.png")
 template:setHull(200)
 template:setShields(200, 200, 200, 200)
+template:setWarpSpeed(800)
 template:setSpeed(60, 10, 15)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 120, -20, 1500.0, 4.0, 11)
@@ -256,13 +266,14 @@ template:setDescription([[The Hoplite class destroyer is an excellent escort shi
 template:setRadarTrace("radar_adv_gunship.png")
 template:setHull(250)
 template:setShields(200, 200, 200, 200)
+template:setWarpSpeed(1000)
 template:setSpeed(100, 10, 20)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0,100, -30, 1500.0, 6.0, 8)
 template:setBeam(1,100,  30, 1500.0, 6.0, 8)
 --template:setBeam(2,120, 0, 1500.0, 6.0, 8)
-template:setBeam(3,10, 180, 2000, 1.0, 20)
-template:setBeam(4,10, 180, 2000, 1.0, 20)
+template:setBeam(3,10, 180, 2000, 1.0, 10)
+template:setBeam(4,-10, 180, 2000, 1.0, 10)
 
 template:setBeamStation(0,1)
 template:setBeamStation(1,1)
@@ -285,11 +296,13 @@ template:setTubeStation(2,2)
 template:setTubeStation(3,2)
 template:setTubeStation(4,2)
 template:setTractorBeam(2000, 100)
-template:setDockClasses("Starfighter", "Drone", "Frigate")
+template:setDockClasses("Drone", "Starfighter", "Frigate")
+-- template:setExternalDockClasses("Frigate", "Destroyer")
+-- template:setInternalDockClasses("Starfighter")
 template:setDocks(2, 1, 1, 1, 1, 3)
 template:addDrones("Scout Drone", 1)
-template:addDrones("Defence Drone", 1)
-template:addDrones("Mine Layer Drone", 1)
+template:addDrones("Defence Drone", 2)
+template:addDrones("Mine Layer Drone", 2)
 
 variation = template:copy("UCS Hoplite Destroyer")
 variation:setBeamWeaponTurret( 3, 360, 0, 1)
@@ -303,15 +316,18 @@ variation:setSpeed(100, 10, 20)
 variation:setCombatManeuver(400, 250)
 variation:setWeaponStorage("Homing", 12)
 variation:setWeaponStorage("Nuke", 2)
-variation:setWeaponStorage("Mine", 2)
+variation:setWeaponStorage("Mine", 6)
 variation:setWeaponStorage("EMP", 8)
 variation:setWeaponStorage("HVLI", 8)
 variation:weaponTubeDisallowMissle(0, "Mine"):weaponTubeDisallowMissle(1, "Mine")
 variation:weaponTubeDisallowMissle(2, "Mine"):weaponTubeDisallowMissle(3, "Mine")
+variation:weaponTubeDisallowMissle(0, "Nuke"):weaponTubeDisallowMissle(1, "Nuke")
+variation:weaponTubeDisallowMissle(2, "Nuke"):weaponTubeDisallowMissle(3, "Nuke")
 variation:setTubeDirection(4, 180):setWeaponTubeExclusiveFor(4, "Mine")
+variation:setEnergyStorage(1500)
 --                       Arc, Dir, Rotate speed
---variation:setBeamWeaponTurret( 0, 90, 0, 1)
---variation:setBeamWeaponTurret( 1, 90, 180, 1)
+variation:setBeamWeaponTurret( 3, 360, 0, 1)
+variation:setBeamWeaponTurret( 4, 360, 0, 1)
 
 
 variation:addRoomSystem(1, 0, 2, 1, "Maneuver");
@@ -478,6 +494,7 @@ variation:setBeamWeaponTurret( 0, 90,   0, 6)
 variation:setBeamWeaponTurret( 1, 90, 180, 6)
 variation:setCombatManeuver(400, 250)
 variation:setJumpDriveRange(5000, 90000) 
+variation:setEnergyStorage(1500)
 
 variation:setRepairCrewCount(6)
 variation:addRoomSystem(3,0,2,3, "Reactor")
