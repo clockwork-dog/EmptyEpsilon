@@ -14,6 +14,7 @@ GuiViewportMainScreen::GuiViewportMainScreen(GuiContainer* owner, string id)
     if (flags & flag_spacedust)
         showSpacedust();
 
+    // Logic for this flag has been inverted, so "first_person" is actually the third-person view
     first_person = PreferencesManager::get("first_person") == "1";
 }
 
@@ -43,8 +44,9 @@ void GuiViewportMainScreen::onDraw(sf::RenderTarget& window)
         float camera_ship_height = 420.0f + my_spaceship->getPositionZ();
         if (!first_person)
         {
+            // SBW: Hardcoded camera height for consistent stardust experience between ship-classes
             camera_ship_distance = -my_spaceship->getRadius();
-            camera_ship_height = my_spaceship->getRadius() / 10.f + my_spaceship->getPositionZ();
+            camera_ship_height = 15.0f;
             camera_pitch = 0;
         }
         sf::Vector2f cameraPosition2D = my_spaceship->getPosition() + sf::vector2FromAngle(target_camera_yaw) * -camera_ship_distance;

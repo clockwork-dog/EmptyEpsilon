@@ -262,20 +262,28 @@ void GuiViewport3D::onDraw(sf::RenderTarget& window)
     {
         static std::vector<sf::Vector3f> space_dust;
 
-        while(space_dust.size() < 1000)
+        while(space_dust.size() < 3000)
             space_dust.push_back(sf::Vector3f());
 
         sf::Vector2f dust_vector = my_spaceship->getVelocity() / 100.0f;
-        sf::Vector3f dust_center = sf::Vector3f(my_spaceship->getPosition().x, my_spaceship->getPosition().y, my_spaceship->getPositionZ());
-        glColor4f(0.7, 0.5, 0.35, 0.07);
+        sf::Vector3f dust_center = sf::Vector3f(my_spaceship->getPosition().x, my_spaceship->getPosition().y, 0.0f); 
+        glColor4f(1, 0.95, 0.81, 0.7);
 
-        for(unsigned int n=0; n<space_dust.size(); n++)
+        for (unsigned int n = 0; n < space_dust.size(); n++)
         {
             const float maxDustDist = 500.0f;
-            const float minDustDist = 100.0f;
+            const float minDustDist = 10.0f;
             glPushMatrix();
-            if ((space_dust[n] - dust_center) > maxDustDist || (space_dust[n] - dust_center) < minDustDist)
-                space_dust[n] = dust_center + sf::Vector3f(random(-maxDustDist, maxDustDist), random(-maxDustDist, maxDustDist), random(-maxDustDist, maxDustDist));
+
+            auto delta = space_dust[n] - dust_center;
+            if (delta > maxDustDist || delta < minDustDist)
+            {
+                // TODO [SBW]: Weight dust generation to favour the direction of movement
+                space_dust[n] = dust_center + sf::Vector3f(
+                    random(-maxDustDist, maxDustDist), 
+                    random(-maxDustDist, maxDustDist), 
+                    random(-maxDustDist, maxDustDist));
+            }
             glTranslatef(space_dust[n].x, space_dust[n].y, space_dust[n].z);
             glBegin(GL_LINES);
             glVertex3f(-dust_vector.x, -dust_vector.y, 0);
