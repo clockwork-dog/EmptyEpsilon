@@ -3,8 +3,6 @@
 
 #include "gui/gui2_canvas.h"
 #include "playerInfo.h"
-#include "io/network/address.h"
-#include "preferenceManager.h"
 
 class GuiOverlay;
 class GuiPanel;
@@ -12,13 +10,13 @@ class GuiButton;
 class GuiToggleButton;
 class GuiTextEntry;
 class GuiLabel;
-class ServerScanner;
+class GuiControlNumericEntryPanel;
 
 class AutoConnectScreen : public GuiCanvas, public Updatable
 {
 	GuiOverlay* screen_connect;
     P<ServerScanner> scanner;
-    sp::io::network::Address connect_to_address;
+    sf::IpAddress connect_to_address;
     ECrewPosition crew_position;
     bool control_main_screen;
     bool waiting_for_password;
@@ -34,14 +32,14 @@ class AutoConnectScreen : public GuiCanvas, public Updatable
     GuiControlNumericEntryPanel* control_code_numeric_panel;
 
     GuiLabel* status_label;
-    int crew_position_raw = (PreferencesManager::get("autoconnect").toInt());
+    GuiLabel* filter_label;
 public:
-    AutoConnectScreen(ECrewPosition crew_position, bool control_main_screen, string ship_filter);
+    AutoConnectScreen(ECrewPosition crew_position, int auto_mainscreen, bool control_main_screen, string ship_filter);
     void autoConnectPasswordEntryOnOkClick();
     void autoConnectPasswordEntryOnEnter(string text);
     virtual ~AutoConnectScreen();
 
-    virtual void update(float delta) override;
+    virtual void update(float delta);
 
 private:
     bool isValidShip(int index);
