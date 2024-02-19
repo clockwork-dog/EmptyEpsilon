@@ -1,5 +1,6 @@
 #include <i18n.h>
 #include "tutorialGame.h"
+#include "menus/tutorialMenu.h"
 #include "scriptInterface.h"
 #include "playerInfo.h"
 #include "spaceObjects/playerSpaceship.h"
@@ -254,7 +255,7 @@ void TutorialGame::finish()
         destroy();
 
         disconnectFromServer();
-        returnToMainMenu();
+        new TutorialMenu();
     }
 }
 

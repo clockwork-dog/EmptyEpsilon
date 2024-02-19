@@ -62,14 +62,6 @@ TutorialMenu::TutorialMenu()
     });
     start_tutorial_button->setEnable(false)->setPosition(0, 0, ABottomRight)->setSize(300, GuiElement::GuiSizeMax);
 
-    // Back button.
-    (new GuiButton(bottom_row, "BACK", tr("Back"), [this]()
-    {
-        // Close this menu, stop the music, and return to the main menu.
-        destroy();
-        returnToMainMenu();
-    }))->setPosition(0, 0, ABottomLeft)->setSize(300, GuiElement::GuiSizeMax);
-
     // Select the first scenario in the list by default.
     if (!tutorial_filenames.empty()) {
         tutorial_list->setSelectionIndex(0);
