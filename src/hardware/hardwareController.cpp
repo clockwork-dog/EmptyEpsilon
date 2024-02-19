@@ -5,6 +5,7 @@
 #include "playerInfo.h"
 #include "spaceObjects/nebula.h"
 #include "spaceObjects/warpJammer.h"
+#include "preferenceManager.h"
 
 #include "devices/dmx512SerialDevice.h"
 #include "devices/enttecDMXProDevice.h"
@@ -410,7 +411,7 @@ bool HardwareController::getVariableValue(int ship_number, string variable_name,
     SHIP_VARIABLE("YellowAlert", ship->getAlertLevel() == AL_YellowAlert ? 1.0f : 0.0f);
     SHIP_VARIABLE("RedAlert", ship->getAlertLevel() == AL_RedAlert ? 1.0f : 0.0f);
     SHIP_VARIABLE("SelfDestruct", ship->activate_self_destruct ? 1.0f : 0.0f);
-    SHIP_VARIABLE("SelfDestructCountdown", ship->self_destruct_countdown / 10.0f);
+    SHIP_VARIABLE("SelfDestructCountdown", ship->self_destruct_countdown);
     for(int n=0; n<max_weapon_tubes; n++)
     {
         SHIP_VARIABLE("TubeLoaded" + string(n), ship->weapon_tube[n].isLoaded() ? 1.0f : 0.0f);
