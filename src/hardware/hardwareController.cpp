@@ -411,7 +411,8 @@ bool HardwareController::getVariableValue(int ship_number, string variable_name,
     SHIP_VARIABLE("YellowAlert", ship->getAlertLevel() == AL_YellowAlert ? 1.0f : 0.0f);
     SHIP_VARIABLE("RedAlert", ship->getAlertLevel() == AL_RedAlert ? 1.0f : 0.0f);
     SHIP_VARIABLE("SelfDestruct", ship->activate_self_destruct ? 1.0f : 0.0f);
-    SHIP_VARIABLE("SelfDestructCountdown", ship->self_destruct_countdown);
+    SHIP_VARIABLE("CurrentSelfDestructCountdownValue", ship->self_destruct_countdown);
+    SHIP_VARIABLE("SelfDestructCountdown", ship->activate_self_destruct ? PreferencesManager::get("self_destruct_countdown", "10").toFloat() : 0.0f);
     for(int n=0; n<max_weapon_tubes; n++)
     {
         SHIP_VARIABLE("TubeLoaded" + string(n), ship->weapon_tube[n].isLoaded() ? 1.0f : 0.0f);
