@@ -226,7 +226,7 @@ void TutorialGame::switchViewToScreen(int n)
     if (viewport == nullptr)
         return;
 
-    if (n < 0 || n >= 8)
+    if (n < 0 || n >= 13)
         return;
     hideAllScreens();
     station_screen[n]->show();
@@ -278,7 +278,7 @@ void TutorialGame::hideAllScreens()
     tactical_radar->hide();
     long_range_radar->hide();
 
-    for(int n=0; n<8; n++)
+    for(int n=0; n<13; n++)
     {
         station_screen[n]->hide();
     }
