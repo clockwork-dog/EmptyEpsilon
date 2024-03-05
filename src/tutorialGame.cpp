@@ -1,5 +1,6 @@
 #include <i18n.h>
 #include "tutorialGame.h"
+#include "gameGlobalInfo.h"
 #include "menus/tutorialMenu.h"
 #include "scriptInterface.h"
 #include "playerInfo.h"
@@ -77,6 +78,8 @@ void TutorialGame::createScreens()
     long_range_radar->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     long_range_radar->setRangeIndicatorStepSize(5000.0f)->longRange()->enableCallsigns()->hide();
     long_range_radar->setFogOfWarStyle(GuiRadarView::NebulaFogOfWar);
+
+    setDefaultsFromPreferences();
 
     station_screen[0] = new HelmsScreen(this);
     station_screen[1] = new WeaponsScreen(this);
@@ -268,6 +271,28 @@ void TutorialGame::finish()
         disconnectFromServer();
         new TutorialMenu();
     }
+}
+
+void TutorialGame::setDefaultsFromPreferences()
+{
+    // Follow the same setup process as ServerCreationScreen so tutorials respect options in the same way as the server games
+    gameGlobalInfo->player_warp_jump_drive_setting = EPlayerWarpJumpDrive(PreferencesManager::get("server_config_warp_jump_drive_setting", "0").toInt());
+    gameGlobalInfo->scanning_complexity = EScanningComplexity(PreferencesManager::get("server_config_scanning_complexity", "2").toInt());
+    gameGlobalInfo->hacking_difficulty = PreferencesManager::get("server_config_hacking_difficulty", "1").toInt();
+    gameGlobalInfo->hacking_games = EHackingGames(PreferencesManager::get("server_config_hacking_games", "2").toInt());
+    gameGlobalInfo->use_beam_shield_frequencies = PreferencesManager::get("server_config_use_beam_shield_frequencies", "1").toInt();
+    gameGlobalInfo->use_system_damage = PreferencesManager::get("server_config_use_system_damage", "1").toInt();
+    gameGlobalInfo->use_advanced_sector_system = PreferencesManager::get("server_config_use_advanced_sector_system", "1").toInt();
+    gameGlobalInfo->use_complex_radar_signatures = PreferencesManager::get("server_config_use_complex_radar_signatures", "0").toInt();
+    gameGlobalInfo->allow_main_screen_tactical_radar = PreferencesManager::get("server_config_allow_main_screen_tactical_radar", "1").toInt();
+    gameGlobalInfo->allow_main_screen_long_range_radar = PreferencesManager::get("server_config_allow_main_screen_long_range_radar", "1").toInt();
+    gameGlobalInfo->allow_main_screen_far_range_radar = PreferencesManager::get("server_config_allow_main_screen_far_range_radar", "1").toInt();
+    gameGlobalInfo->allow_main_screen_target_analysis = PreferencesManager::get("server_config_allow_main_screen_target_analysis", "1").toInt();
+    gameGlobalInfo->use_nano_repair_crew = PreferencesManager::get("server_use_nano_repair_crew", "1").toInt();
+    gameGlobalInfo->color_by_faction = PreferencesManager::get("server_config_color_by_faction", "1").toInt();
+    gameGlobalInfo->all_can_be_targeted = PreferencesManager::get("server_config_all_can_be_targeted", "1").toInt();
+    gameGlobalInfo->logs_by_station = PreferencesManager::get("server_config_logs_by_station", "1").toInt();
+    gameGlobalInfo->use_warp_terrain = PreferencesManager::get("server_config_use_warp_terrain", "1").toInt();
 }
 
 void TutorialGame::hideAllScreens()

@@ -44,6 +44,7 @@ public:
     void onNext(ScriptSimpleCallback callback) { _onNext = callback; }
     void finish();
 private:
+    void setDefaultsFromPreferences();
     void hideAllScreens();
     void createScreens();
 };
