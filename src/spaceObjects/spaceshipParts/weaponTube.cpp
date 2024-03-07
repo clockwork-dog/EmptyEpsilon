@@ -20,6 +20,7 @@ WeaponTube::WeaponTube()
     tube_index = 0;
     size = MS_Medium;
     station = 0;
+    fired = MW_None;
 }
 
 void WeaponTube::setParent(SpaceShip* parent)
@@ -35,6 +36,7 @@ void WeaponTube::setParent(SpaceShip* parent)
     parent->registerMemberReplication(&type_loaded);
     parent->registerMemberReplication(&state);
     parent->registerMemberReplication(&delay, 0.5);
+    parent->registerMemberReplication(&fired);
 }
 
 float WeaponTube::getLoadTimeConfig()
@@ -111,9 +113,15 @@ void WeaponTube::fire(float target_angle)
         delay = 0.0;
     }else{
         spawnProjectile(target_angle);
+        fired = type_loaded;
         state = WTS_Empty;
         type_loaded = MW_None;
     }
+}
+
+EMissileWeapons firedType()
+{
+    return fired;
 }
 
 float WeaponTube::getSizeCategoryModifier()
@@ -248,6 +256,7 @@ void WeaponTube::forceUnload()
 
 void WeaponTube::update(float delta)
 {
+    fired = MW_None;
     if (delay > 0.0)
     {
         delay -= delta * parent->getSystemEffectiveness(SYS_MissileSystem);
@@ -269,6 +278,7 @@ void WeaponTube::update(float delta)
                 spawnProjectile(0);
 
                 fire_count -= 1;
+                fired = type_loaded;
                 if (fire_count > 0)
                 {
                     delay = 1.5;
