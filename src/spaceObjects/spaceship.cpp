@@ -1845,6 +1845,25 @@ void SpaceShip::setOxygenZone(int index, string label, float oxygen_level, float
     oxygen_zones[index].discharge_rate_per_second = discharge_rate_per_second;
 }
 
+string getBeamWeaponDamageTypeName(EDamageType damage)
+{
+    switch(damage)
+    {
+    case DT_Energy:
+        return "Energy";
+    case DT_EMP:
+        return "EMP";
+    case DT_Heat:
+        return "Heat";
+    case DT_Kinetic:
+        return "Kinetic";
+    case DT_Count:
+        return "-";
+    default:
+        return "UNK: " + string(int(damage));
+    }
+}
+
 string getMissileWeaponName(EMissileWeapons missile)
 {
     switch(missile)
